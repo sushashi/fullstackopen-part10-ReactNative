@@ -48,7 +48,7 @@ const SignOutBar = () => {
 
 const AppBar = () => {
   const response = useQuery(GET_ME);
-  const me = response.loading ? undefined : response.data.me
+  const me = response.data?.me
   console.log('GETME data', me )
 
   return (

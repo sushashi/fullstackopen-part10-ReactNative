@@ -65,7 +65,7 @@ const SignIn = () => {
     } catch (e) {
       console.log(e)
     }
-    console.log('result', result)
+    // console.log('result', result)
 
 
   };

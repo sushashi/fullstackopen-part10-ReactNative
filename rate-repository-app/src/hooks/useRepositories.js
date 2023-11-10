@@ -28,9 +28,9 @@ const useRepositories = () => {
     fetchPolicy: 'cache-and-network',
   });
   
-  console.log(response)
+  // console.log(response)
 
-  const repositories = response.loading ?  undefined : response.data.repositories
+  const repositories = response.data?.repositories
   const loading = response.loading;
 
   return { repositories, loading, refetch: fetchRepositories };
