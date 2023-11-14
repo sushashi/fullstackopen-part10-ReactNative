@@ -67,27 +67,27 @@ const RepositoryItem = ({props}) => {
         />
 
         <View style={styles.containerColumnText}>
-          <Text style={styles.textTitle}>{props.fullName}</Text>
-          <Text style={styles.textDescription}>{props.description}</Text>
-          <Text style={styles.textLanguage}>{props.language}</Text>
+          <Text testID={'repoName'} style={styles.textTitle}>{props.fullName}</Text>
+          <Text testID={'repoDescription'} style={styles.textDescription}>{props.description}</Text>
+          <Text testID={'repoLanguage'} style={styles.textLanguage}>{props.language}</Text>
         </View>
       </View>
 
       <View style={styles.containerRowCount}>
         <View style={styles.containerColumn}>
-          <Text style={styles.textDescriptionBold}>{round(props.stargazersCount)}</Text>
+          <Text testID={'repoStarGazers'} style={styles.textDescriptionBold}>{round(props.stargazersCount)}</Text>
           <Text>Stars</Text>
         </View>
         <View style={styles.containerColumn}>
-          <Text style={styles.textDescriptionBold}>{round(props.forksCount)}</Text>
+          <Text testID={'repoForksCount'} style={styles.textDescriptionBold}>{round(props.forksCount)}</Text>
           <Text>Forks</Text>
         </View>
         <View style={styles.containerColumn}>
-          <Text style={styles.textDescriptionBold}>{round(props.reviewCount)}</Text>
+          <Text testID={'repoReviewCount'} style={styles.textDescriptionBold}>{round(props.reviewCount)}</Text>
           <Text>Reviews</Text>
         </View>
         <View style={styles.containerColumn}>
-          <Text style={styles.textDescriptionBold}>{round(props.ratingAverage)}</Text>
+          <Text testID={'repoRatingAverage'} style={styles.textDescriptionBold}>{round(props.ratingAverage)}</Text>
           <Text>Rating</Text>
         </View>
       </View>
