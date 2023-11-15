@@ -7,13 +7,11 @@ const httpLink = createHttpLink({
   uri: Constants.manifest.extra.apolloUri,
 });
 
-// This wasn't in the lecture notes
-
 const createApolloClient = (authStorage) => {
   const authLink = setContext(async (_, { headers }) => {
     try {
       const accessToken = await authStorage.getAccessToken();
-      console.log('apolloClientToken', accessToken)
+
       return {
         headers: {
           ...headers,

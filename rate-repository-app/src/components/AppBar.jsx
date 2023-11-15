@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
 import { useApolloClient, useQuery } from '@apollo/client';
 
@@ -49,7 +49,6 @@ const SignOutBar = () => {
 const AppBar = () => {
   const response = useQuery(GET_ME);
   const me = response.data?.me
-  console.log('GETME data', me )
 
   return (
     <View style={styles.container}>
