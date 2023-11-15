@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
-import { Link } from 'react-router-native';
+import { Link, useNavigate } from 'react-router-native';
 import { useApolloClient, useQuery } from '@apollo/client';
 
 import { GET_ME } from '../graphql/queries'
@@ -35,10 +35,12 @@ const SignInBar = () => {
 const SignOutBar = () => {
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
+  const navigate = useNavigate();
 
   const logout = async () => {
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
+    navigate('/')
   }
 
   return (
@@ -46,16 +48,26 @@ const SignOutBar = () => {
   )
 }
 
+const CreateReviewBar = () => {
+  return (
+    <Link to='/review'>
+      <Text style={styles.text}>Create a review</Text>
+    </Link>
+  )
+}
+
 const AppBar = () => {
   const response = useQuery(GET_ME);
   const me = response.data?.me
-
+  // console.log('me',me)
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <Link to='/'>
           <Text style={styles.text}>Repositories</Text>
         </Link>
+
+        {me ? <CreateReviewBar /> : <></>}
 
         {me ? <SignOutBar /> : <SignInBar />}
 

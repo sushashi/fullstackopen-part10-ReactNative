@@ -5,26 +5,8 @@ import * as yup from 'yup';
 
 import FormikTextInput from './FormikTextInput';
 import useSignIn from '../hooks/useSignIn';
-import theme from '../utils/theme';
+import styles from '../utils/styles';
 import Text from './Text';
-
-
-const styles = StyleSheet.create({
-  container:{
-    backgroundColor: 'white'
-  },
-  button:{
-    color: 'white',
-    fontStyle: theme.fonts.main,
-    fontWeight: theme.fontWeights.bold,
-    textAlign: 'center',
-    backgroundColor: theme.colors.primary,
-    padding: 5,
-    borderRadius: 4,
-    margin: 10,
-    padding: 10,
-  }
-})
 
 const initialValues = {
   username: '',
