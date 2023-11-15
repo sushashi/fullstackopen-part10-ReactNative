@@ -42,7 +42,6 @@ const SignOutBar = () => {
     apolloClient.resetStore();
     navigate('/')
   }
-
   return (
     <Text onPress={logout} style={styles.text}>Sign-Out</Text>
   )
@@ -56,24 +55,36 @@ const CreateReviewBar = () => {
   )
 }
 
+const SignUpBar = () => {
+  return (
+    <Link to='/signup'>
+      <Text style={styles.text}>Sign up</Text>
+    </Link>
+  )
+}
+
+const RepositoryBar = () => {
+  return (
+    <Link to='/'>
+      <Text style={styles.text}>Repositories</Text>
+    </Link>
+  )
+}
+
 const AppBar = () => {
   const response = useQuery(GET_ME);
   const me = response.data?.me
   // console.log('me',me)
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        <Link to='/'>
-          <Text style={styles.text}>Repositories</Text>
-        </Link>
-
+        <RepositoryBar />
         {me ? <CreateReviewBar /> : <></>}
-
         {me ? <SignOutBar /> : <SignInBar />}
-
+        {me ? <></> : <SignUpBar />}  
       </ScrollView>
     </View>
-
   );
 };
 

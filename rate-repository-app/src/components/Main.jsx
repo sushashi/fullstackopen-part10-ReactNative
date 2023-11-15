@@ -7,6 +7,7 @@ import SignIn from './SignIn';
 import RepositorySingleItem from './RepositorySingleItem';
 import Review from './Review';
 import theme from '../utils/theme';
+import SignUp from './SignUp';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,6 +29,7 @@ const Main = () => {
         <Route path='*' element={<Navigate to='/' replace />} />
         <Route path='/repo/:repoId' element={<RepositorySingleItem />} />
         <Route path='/review' element={<Review />} />
+        <Route path='/signup' element={<SignUp />} />
       </Routes>
     </View>
   );

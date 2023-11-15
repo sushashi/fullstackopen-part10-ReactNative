@@ -36,15 +36,14 @@ const validationSchema = yup.object().shape({
 })
 
 const Review = () => {
-  const [createReview, result] = useCreateReview();
+  const [createReview] = useCreateReview();
   const navigate = useNavigate()
 
   const onSubmit = async (review) => {
     review = { ...review, rating: parseInt(review.rating) }
     try {
-      const { response } = await createReview( review ) 
+      await createReview( review ) 
       const path = review.ownerName + '.' + review.repositoryName;
-      console.log('path', path)
       navigate(`/repo/${path}`)
     } catch (e) {
       console.log(e.message)
