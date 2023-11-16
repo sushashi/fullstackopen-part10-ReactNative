@@ -2,10 +2,11 @@ import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
+import { Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
-import theme from '../utils/theme';
 
 const styles = StyleSheet.create({
   separator: {
@@ -16,8 +17,24 @@ const styles = StyleSheet.create({
   },
   menu:{
     padding: 1
+  },
+  searchbar:{
+    margin: 10,
+    backgroundColor: 'white'
   }
 });
+
+const Querybar = ({ searchQuery, setSearchQuery }) => {
+  return (
+    <Searchbar
+      style={styles.searchbar}
+      mode= 'bar'
+      placeholder="Search"
+      onChangeText={(query) => setSearchQuery(query)}
+      value={searchQuery}
+    />
+  )
+}
 
 const MenuOrdering = ({ selectedOrdering, setSelectedOrdering }) => {
   return (
@@ -37,7 +54,16 @@ const MenuOrdering = ({ selectedOrdering, setSelectedOrdering }) => {
   )
 }
 
-export const RepositoryListContainer = ({ repositories, selectedOrdering, setSelectedOrdering }) => {
+const FilterBar = ({ selectedOrdering, setSelectedOrdering, searchQuery, setSearchQuery }) => {
+  return (
+    <>
+      <Querybar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <MenuOrdering selectedOrdering={selectedOrdering} setSelectedOrdering={setSelectedOrdering}/>
+    </>
+    )
+}
+
+export const RepositoryListContainer = ({ repositories, selectedOrdering, setSelectedOrdering, searchQuery, setSearchQuery }) => {
   const ItemSeparator = () => <View style={styles.separator} />;
   const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
   const navigate = useNavigate();
@@ -46,7 +72,13 @@ export const RepositoryListContainer = ({ repositories, selectedOrdering, setSel
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={<MenuOrdering selectedOrdering={selectedOrdering} setSelectedOrdering={setSelectedOrdering}/>}
+      ListHeaderComponent={
+        <FilterBar 
+          selectedOrdering={selectedOrdering} 
+          setSelectedOrdering={setSelectedOrdering}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />}
       renderItem={({item}) => (
         <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
           <RepositoryItem props={item} />
@@ -58,19 +90,23 @@ export const RepositoryListContainer = ({ repositories, selectedOrdering, setSel
 
 const RepositoryList = () => {
   const [selectedOrdering, setSelectedOrdering] = useState('latest')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [value] = useDebounce(searchQuery, 500)
+
   let order = {
     orderBy: '',
-    orderDirection: ''
+    orderDirection: '',
+    searchKeyword: ''
   }
   switch(selectedOrdering) {
     case 'latest':
-      order = {orderBy: 'CREATED_AT', orderDirection: 'DESC'}
+      order = {orderBy: 'CREATED_AT', orderDirection: 'DESC', searchKeyword: value}
       break
     case 'highestRated':
-      order = {orderBy: 'RATING_AVERAGE', orderDirection: 'DESC'}
+      order = {orderBy: 'RATING_AVERAGE', orderDirection: 'DESC', searchKeyword: value}
       break
     case 'lowestRated':
-      order = {orderBy: 'RATING_AVERAGE', orderDirection: 'ASC'}
+      order = {orderBy: 'RATING_AVERAGE', orderDirection: 'ASC', searchKeyword: value}
       break
   }
 
@@ -80,6 +116,8 @@ const RepositoryList = () => {
       repositories={repositories}
       selectedOrdering={selectedOrdering}
       setSelectedOrdering={setSelectedOrdering}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
     />
   )
 }

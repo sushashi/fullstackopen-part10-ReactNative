@@ -71,6 +71,14 @@ const RepositoryBar = () => {
   )
 }
 
+const MyReviewsBar = () => {
+  return (
+    <Link to='/reviews'>
+      <Text style={styles.text}>My reviews</Text>
+    </Link>
+  )
+}
+
 const AppBar = () => {
   const response = useQuery(GET_ME);
   const me = response.data?.me
@@ -81,6 +89,7 @@ const AppBar = () => {
       <ScrollView horizontal>
         <RepositoryBar />
         {me ? <CreateReviewBar /> : <></>}
+        {me ? <MyReviewsBar /> : <></>}
         {me ? <SignOutBar /> : <SignInBar />}
         {me ? <></> : <SignUpBar />}  
       </ScrollView>

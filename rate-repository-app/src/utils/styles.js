@@ -3,7 +3,7 @@ import theme from "./theme";
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   button:{
     color: 'white',
@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     margin: 10,
     padding: 10,
+  },
+  separator: {
+    height: 10
   }
 })
 
