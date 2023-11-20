@@ -42,7 +42,7 @@ const MenuOrdering = ({ selectedOrdering, setSelectedOrdering }) => {
       <Picker
         style={styles.menu}
         selectedValue={selectedOrdering}
-        onValueChange={(itemValue, itemIndex) => 
+        onValueChange={(itemValue) => 
           setSelectedOrdering(itemValue)
       }>
         <Picker.Item label='Latest repositories' value='latest' />
@@ -63,7 +63,7 @@ const FilterBar = ({ selectedOrdering, setSelectedOrdering, searchQuery, setSear
     )
 }
 
-export const RepositoryListContainer = ({ repositories, selectedOrdering, setSelectedOrdering, searchQuery, setSearchQuery }) => {
+export const RepositoryListContainer = ({ repositories, onEndReach, selectedOrdering, setSelectedOrdering, searchQuery, setSearchQuery }) => {
   const ItemSeparator = () => <View style={styles.separator} />;
   const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
   const navigate = useNavigate();
@@ -83,7 +83,9 @@ export const RepositoryListContainer = ({ repositories, selectedOrdering, setSel
         <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
           <RepositoryItem props={item} />
         </Pressable>
-  )}
+      )}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.9}
     />
   );
 };
@@ -110,7 +112,13 @@ const RepositoryList = () => {
       break
   }
 
-  const { repositories } = useRepositories(order);
+  const { repositories, fetchMore } = useRepositories( {first: 6 , ...order });
+  
+  const onEndReach = () => {
+    console.log('onEndReach Repositories called')
+    fetchMore();
+  }
+
   return (
     <RepositoryListContainer 
       repositories={repositories}
@@ -118,6 +126,7 @@ const RepositoryList = () => {
       setSelectedOrdering={setSelectedOrdering}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
+      onEndReach={onEndReach}
     />
   )
 }

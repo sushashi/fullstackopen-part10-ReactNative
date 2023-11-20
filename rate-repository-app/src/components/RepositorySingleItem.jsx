@@ -40,19 +40,28 @@ const RepositoryInfo = ({ repository }) => {
 const RepositorySingleItem = () => {
   const { repoId } = useParams();
   
-  const [ repository, isLoading ] = useRepositorySingle(repoId);
-  if (isLoading) return <View></View>
+  const { repository, loading, fetchMore } = useRepositorySingle({ first: 4, repositoryId: repoId });
+  if (loading) return console.log('loading reviews...')
 
+  const onEndReach = () => {
+    console.log('onEndReach Reviews called')
+    fetchMore();
+  }
   const reviews = repository.reviews.edges.map( e => e.node )
 
   return (
-    <FlatList
-      data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
-      ItemSeparatorComponent={() => <View style={style.separator} />}
-    />
+    <View style={{flex:1}}>
+      <FlatList
+        data={reviews}
+        renderItem={({ item }) => <ReviewItem review={item} />}
+        keyExtractor={({ id }) => id}
+        ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+        ItemSeparatorComponent={() => <View style={style.separator} />}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
+      />
+    </View>
+
   )
 }
 

@@ -3,19 +3,28 @@ import { GET_REPOSITORIES } from '../graphql/queries';
 
 const useRepositories = ( order ) => {
 
-  const fetchRepositories = () => {
-    console.log('fetchRepositories...')
-  }
-
-  const response = useQuery(GET_REPOSITORIES, {
+  const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
     variables: order ,
     fetchPolicy: 'cache-and-network',
   });
 
-  const repositories = response.data?.repositories
-  const loading = response.loading;
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+    if (!canFetchMore) {
+      return;
+    }
 
-  return { repositories, loading, refetch: fetchRepositories };
+    fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...order
+      },
+    });
+  };
+
+  const repositories = data?.repositories;
+
+  return { repositories, fetchMore: handleFetchMore, loading, ...result };
 }
 
 export default useRepositories;

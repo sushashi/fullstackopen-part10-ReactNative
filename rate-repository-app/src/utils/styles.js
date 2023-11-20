@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeights.bold,
     textAlign: 'center',
     backgroundColor: theme.colors.primary,
-    padding: 5,
     borderRadius: 4,
     margin: 10,
     padding: 10,
